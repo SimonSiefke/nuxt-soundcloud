@@ -17,4 +17,4 @@ module.exports = {
     'space-before-function-paren': ['error', 'never'],
     'no-inner-declarations': 'off'
   }
-}
+}''
