@@ -1,4 +1,4 @@
-<template>
+<template key="22">
   <figure id="soundcloud-track-card">
     <div class="image-wrapper">
       <img v-if="track.cover" :src="track.cover" alt="">
