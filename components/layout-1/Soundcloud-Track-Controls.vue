@@ -1,12 +1,12 @@
 <template>
   <section id="soundcloud-track-controls">
-    <span class="previous" @click="playPrevious()">
+    <span class="previous" @click="playPreviousTrack()">
       <i class="fa fa-backward" aria-hidden="true"></i>
     </span>
-    <span class="current" @click="track.playing ? pause(): play(track)">
+    <span class="current" @click="togglePlay()">
       <i class="fa" :class="track.playing ? 'fa-pause':'fa-play'" aria-hidden="true"></i>
     </span>
-    <span class="next" @click="playNext()">
+    <span class="next" @click="playNextTrack()">
       <i class="fa fa-forward" aria-hidden="true"></i>
     </span>
   </section>
@@ -25,24 +25,28 @@ export default {
     ...mapGetters('soundcloud', ['track'])
   },
   methods: {
-    ...mapActions('soundcloud', ['play', 'pause', 'playNext', 'playPrevious'])
+    ...mapActions('soundcloud', [
+      'playNextTrack',
+      'playPreviousTrack',
+      'togglePlay'
+    ])
   }
 }
 </script>
 <style lang="stylus" scoped>
-#soundcloud-track-controls {
-  background: #50607a;
-  display: flex;
-  justify-content: center;
-  padding: 0.6rem 0;
-  margin-top: 20px;
-}
+#soundcloud-track-controls
+  background #50607a
+  display flex
+  justify-content center
+  margin-top 20px
+  padding 1rem 0
 
-span {
-  font-size: 1.5rem;
-  margin: 0 1.5rem;
-  cursor: pointer;
-  color: #fff;
-  user-select: none;
-}
+span
+  color #fff
+  cursor pointer
+  display flex
+  font-size 1.5rem
+  justify-content center
+  user-select none
+  width 4rem
 </style>

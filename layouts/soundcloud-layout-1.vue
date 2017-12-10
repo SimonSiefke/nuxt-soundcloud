@@ -24,37 +24,35 @@ export default {
   async mounted() {
     // soundcloud is only available on the browser
     if (process.browser) {
+      this.initialize()
       this.getTracks({
-        genres: ['electronic', 'dance', 'pop'],
-        limit: 15
+        q: 'odeza',
+        limit: 10
       })
     }
   },
   methods: {
-    ...mapActions('soundcloud', ['getTracks'])
+    ...mapActions('soundcloud', ['getTracks', 'initialize'])
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-#wrapper {
-  min-height: 100vh;
-  display: grid;
-  justify-content: center;
-  jusify-items: center;
-  align-content: flex-end;
-  grid-template-columns: minmax(6vw, 1fr) 4fr minmax(6vw, 1fr);
-  grid-template-areas: '. card .' 'controls controls controls';
-}
+#wrapper
+  align-content flex-end
+  display grid
+  grid-template-areas '. card .' 'controls controls controls'
+  grid-template-columns minmax(6vw, 1fr) 4fr minmax(6vw, 1fr)
+  jusify-items center
+  justify-content center
+  min-height 100vh
 
-#soundcloud-track-card {
-  grid-area: card;
-  margin: 0 auto;
-}
+#soundcloud-track-card
+  grid-area card
+  margin 0 auto
 
-#soundcloud-track-controls {
-  grid-area: controls;
-}
+#soundcloud-track-controls
+  grid-area controls
 </style>
 
 <style>
