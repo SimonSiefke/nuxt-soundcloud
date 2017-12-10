@@ -1,22 +1,30 @@
 let Soundcloud
-const clientID = 'nEUgbh6lRJ7mvPdBvWrL33FaKJJGtxFt'
 
 if (process.browser) {
   Soundcloud = require('soundcloud')
   Soundcloud.initialize({
-    client_id: clientID
+    client_id: process.env.SOUNDCLOUD_CLIENT_ID
   })
 }
 
+let players = []
+
 export const state = () => ({
+  track: null,
   tracks: [],
-  trackNumber: -1,
-  player: null
+  trackNumber: -1
 })
 
 export const mutations = {
   setTracks(state, tracks) {
     state.tracks = tracks
+  },
+  setTrackNumber(state, newTrackNumber) {
+    if (newTrackNumber !== state.trackNumber) {
+      state.trackNumber = newTrackNumber
+    } else {
+      console.log('should not happen')
+    }
   },
   incrementTrackNumber(state) {
     if (state.trackNumber === state.tracks.length - 1) {
@@ -32,66 +40,125 @@ export const mutations = {
       state.trackNumber--
     }
   },
-  setTrackNumber(state, newTrackNumber) {
-    if (newTrackNumber === state.trackNumber) {
-      console.error('wrong')
-    }
-    state.trackNumber = newTrackNumber
-  },
-  setPlayer(state, player) {
-    state.player = player
+  setPlayer(state, newPlayer) {
+    players[state.trackNumber] = newPlayer
   },
   playTrack(state) {
-    state.player.play()
-
-    // disable playing state of other tracks
-    state.tracks.forEach((track, index) => {
-      if (track.playing && index !== state.trackNumber) {
-        track.playing = false
-      }
-    })
-    // enable playing state of current track
-    state.tracks[state.trackNumber].playing = true
+    if (players[state.trackNumber] && !players[state.trackNumber].isPlaying()) {
+      players[state.trackNumber].play()
+      state.tracks[state.trackNumber].playing = true
+    }
+  },
+  setPlayingStatus(state, payload) {
+    state.tracks[payload.trackNumber].playing = payload.newStatus
   },
   pauseTrack(state) {
-    state.player.pause()
-    state.tracks[state.trackNumber].playing = false
+    if (players[state.trackNumber] && players[state.trackNumber].isPlaying()) {
+      players[state.trackNumber].pause()
+    }
+  },
+  removeTrack(state, trackIndex) {
+    if (state.tracks.length === 1) {
+      players[state.trackNumber] = null
+      state.trackNumber = -1
+      state.tracks = []
+    }
+    state.tracks.splice(trackIndex, 1)
+    for (let i = trackIndex; i < state.tracks.length; i++) {
+      state.tracks[i].index--
+    }
+    if (state.trackNumber === trackIndex) {
+      state.trackNumber = 0
+    }
   }
 }
 
 export const actions = {
-  async updatePlayer({ state, commit }) {
-    try {
-      const newPlayer = await Soundcloud.stream(
-        `/tracks/${state.tracks[state.trackNumber].id}`
-      )
-      commit('setPlayer', newPlayer)
-    } catch (error) {
-      if (error.status === 404) {
-        console.log(404)
+  initialize({ state, dispatch }) {
+    document.body.onkeyup = event => {
+      switch (event.keyCode) {
+        case 32: // space
+          if (state.tracks[state.trackNumber].playing) {
+            dispatch('pause')
+          } else {
+            dispatch('playCurrentTrack')
+          }
+          break
+        case 37: // left arrow
+          dispatch('playPreviousTrack')
+          break
+        case 39: // right arrow
+          dispatch('playNextTrack')
       }
-      console.error(error)
     }
   },
-  async play({ state, commit, dispatch }, track) {
-    // TODO tidy up
-    if (track) {
-      if (track.index === state.trackNumber) {
-        if (!state.player) {
-          await dispatch('updatePlayer')
-        }
-        commit('playTrack')
-        return
-      } else {
-        commit('setTrackNumber', track.index)
-      }
-    }
-
+  async playCurrentTrack({ commit, dispatch }) {
     await dispatch('updatePlayer')
     commit('playTrack')
   },
-  pause({ commit }) {
+  playNextTrack({ commit, dispatch }) {
+    dispatch('pause')
+    commit('incrementTrackNumber')
+    dispatch('playCurrentTrack')
+  },
+  playPreviousTrack({ state, commit, dispatch }) {
+    dispatch('pause')
+    commit('decrementTrackNumber')
+    dispatch('playCurrentTrack')
+  },
+  togglePlay({ state, dispatch }) {
+    if (state.tracks[state.trackNumber].playing) {
+      dispatch('pause')
+    } else {
+      dispatch('playCurrentTrack')
+    }
+  },
+  // async playTrack({ state, commit, dispatch }, track) {
+  //   if (track.index !== state.trackNumber) {
+  //     commit('setTrackNumber', track.index)
+  //   }
+  //   dispatch('playCurrentTrack')
+  // },
+  pause({ state, commit }) {
     commit('pauseTrack')
+  },
+  async updatePlayer({ state, dispatch, commit }) {
+    console.log('updatePlayer')
+    if (!players[state.trackNumber]) {
+      try {
+        const newPlayer = await Soundcloud.stream(
+          `/tracks/${state.tracks[state.trackNumber].id}`
+        )
+        commit('setPlayer', newPlayer)
+        players[state.trackNumber].on('state-change', newState => {
+          switch (newState) {
+            case 'playing':
+              if (!state.tracks[state.trackNumber].playing) {
+                commit('setPlayingStatus', {
+                  trackNumber: state.trackNumber,
+                  newStatus: true
+                })
+              }
+              break
+            case 'paused':
+              if (state.tracks[state.trackNumber].playing) {
+                commit('setPlayingStatus', {
+                  trackNumber: state.trackNumber,
+                  newStatus: false
+                })
+              }
+              break
+            case 'ended':
+              dispatch('playNextTrack')
+          }
+        })
+      } catch (error) {
+        if (error.status === 404) {
+          commit('removeTrack', state.trackNumber)
+        }
+        console.error(error)
+      }
+    }
   },
   async getTracks({ commit }, options) {
     const rawData = await Soundcloud.get('/tracks', options)
@@ -114,19 +181,14 @@ export const actions = {
     }))
     commit('setTracks', newTracks)
     commit('setTrackNumber', 0)
-  },
-  playNext({ commit, dispatch }) {
-    commit('incrementTrackNumber')
-    dispatch('play')
-  },
-  playPrevious({ commit, dispatch }) {
-    commit('decrementTrackNumber')
-    dispatch('play')
   }
 }
 
 export const getters = {
   track(state) {
-    return state.tracks[state.trackNumber]
+    if (state.tracks.length > 0) {
+      return state.tracks[state.trackNumber]
+    }
+    return null
   }
 }

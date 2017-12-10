@@ -2,6 +2,7 @@
   <div id="wrapper">
     <soundcloud-track-card v-if="trackNumber>=0" :track="tracks[trackNumber]"></soundcloud-track-card>
     <soundcloud-track-controls v-if="trackNumber>=0" :tracks="tracks"></soundcloud-track-controls>
+    <!-- <button @click="$store.commit('soundcloud/removeTrack', 1)"></button> -->
   </div>
 
 </template>
@@ -20,44 +21,43 @@ export default {
     SoundcloudTrackCard,
     SoundcloudTrackControls
   },
-  async created() {
+  async mounted() {
     // soundcloud is only available on the browser
     if (process.browser) {
+      this.initialize()
       this.getTracks({
-        genres: ['electronic', 'dance', 'pop'],
+        q: 'odeza',
         limit: 10
       })
     }
   },
   methods: {
-    ...mapActions('soundcloud', ['getTracks'])
+    ...mapActions('soundcloud', ['getTracks', 'initialize'])
   }
 }
 </script>
 
 <style lang="stylus" scoped>
-#wrapper {
-  min-height: 100vh;
-  display: grid;
-  justify-content: center;
-  jusify-items: center;
-  align-content: flex-end;
-  grid-template-columns: minmax(6vw, 1fr) 4fr minmax(6vw, 1fr);
-  grid-template-areas: '. card .' 'controls controls controls';
-}
+#wrapper
+  align-content flex-end
+  display grid
+  grid-template-areas '. card .' 'controls controls controls'
+  grid-template-columns minmax(6vw, 1fr) 4fr minmax(6vw, 1fr)
+  jusify-items center
+  justify-content center
+  min-height 100vh
 
-#soundcloud-track-card {
-  grid-area: card;
-  margin: 0 auto;
-}
+#soundcloud-track-card
+  grid-area card
+  margin 0 auto
 
-#soundcloud-track-controls {
-  grid-area: controls;
-}
+#soundcloud-track-controls
+  grid-area controls
 </style>
 
 <style>
 body {
   background: linear-gradient(45deg, #c0392b 0%, #9b59b6 68%);
+  background: #eaeeee;
 }
 </style>

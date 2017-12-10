@@ -2,7 +2,7 @@
   "name": "soundcloud-api",
   "version": "1.0.0",
   "description": "Nuxt.js project",
-  "author": "Simon <simon.siefke@gmail.com>",
+  "author": "",
   "private": true,
   "scripts": {
     "dev": "nuxt",
@@ -15,6 +15,7 @@
     "test": "echo \"No tests\""
   },
   "dependencies": {
+    "config": "^1.28.1",
     "nuxt": "^1.0.0-rc11",
     "soundcloud": "^3.3.0",
     "stylus": "^0.54.5",

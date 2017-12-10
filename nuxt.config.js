@@ -1,3 +1,5 @@
+const config = require('config')
+
 module.exports = {
   /*
   ** Headers of the page
@@ -18,6 +20,7 @@ module.exports = {
       }
     ]
   },
+  env: config.get('env'),
 
   /*
   ** Customize the progress bar color
