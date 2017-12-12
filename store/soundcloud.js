@@ -1,3 +1,5 @@
+// bug: not playing when switching back to track after finishing
+// TODO error handling for 404 and 403
 let Soundcloud
 
 if (process.browser) {
@@ -12,7 +14,8 @@ let players = []
 export const state = () => ({
   track: null,
   tracks: [],
-  trackNumber: -1
+  trackNumber: -1,
+  loop: true
 })
 
 export const mutations = {
@@ -70,6 +73,15 @@ export const mutations = {
     if (state.trackNumber === trackIndex) {
       state.trackNumber = 0
     }
+  },
+  resetTimer(state) {
+    players[state.trackNumber].seek(0)
+    console.log(players[state.trackNumber])
+    console.log(players[state.trackNumber].isPlaying())
+    console.log(players[state.trackNumber].getState())
+  },
+  toggleLoop(state) {
+    state.loop = !state.loop
   }
 }
 
@@ -149,7 +161,12 @@ export const actions = {
               }
               break
             case 'ended':
-              dispatch('playNextTrack')
+              if (state.loop) {
+                commit('resetTimer')
+                commit('playTrack')
+              } else {
+                dispatch('playNextTrack')
+              }
           }
         })
       } catch (error) {
@@ -161,6 +178,8 @@ export const actions = {
     }
   },
   async getTracks({ commit }, options) {
+    commit('pauseTrack')
+    players = []
     const rawData = await Soundcloud.get('/tracks', options)
 
     const newTracks = rawData.map((track, index) => ({

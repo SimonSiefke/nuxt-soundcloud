@@ -1,18 +1,23 @@
+// TODO: replace span with i tag
 <template>
   <section id="soundcloud-track-controls">
-    <span class="previous" @click="playPreviousTrack()">
-      <i class="fa fa-backward" aria-hidden="true"></i>
+    <span class="previous">
+      <i class="fa fa-backward" aria-hidden="true" @click="playPreviousTrack()"></i>
     </span>
-    <span class="current" @click="togglePlay()">
-      <i class="fa" :class="track.playing ? 'fa-pause':'fa-play'" aria-hidden="true"></i>
+    <span class="current">
+      <i class="fa" :class="track.playing ? 'fa-pause':'fa-play'" aria-hidden="true" @click="togglePlay()"></i>
     </span>
-    <span class="next" @click="playNextTrack()">
-      <i class="fa fa-forward" aria-hidden="true"></i>
+    <span class="next">
+      <i class="fa fa-forward" aria-hidden="true" @click="playNextTrack()"></i>
+    </span>
+
+    <span class="loop">
+      <i class="fa fa-retweet" @click="toggleLoop()" :class="{active:loop}"></i>
     </span>
   </section>
 </template>
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
   props: {
@@ -22,14 +27,16 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('soundcloud', ['track'])
+    ...mapGetters('soundcloud', ['track']),
+    ...mapState('soundcloud', ['loop'])
   },
   methods: {
     ...mapActions('soundcloud', [
       'playNextTrack',
       'playPreviousTrack',
       'togglePlay'
-    ])
+    ]),
+    ...mapMutations('soundcloud', ['toggleLoop'])
   }
 }
 </script>
@@ -42,11 +49,16 @@ export default {
   padding 1rem 0
 
 span
+  text-align center
+  width 4rem
+
+i
   color #fff
   cursor pointer
-  display flex
+  display inline-block
   font-size 1.5rem
-  justify-content center
   user-select none
-  width 4rem
+
+.loop .active
+  color #1abc9c
 </style>

@@ -12,3 +12,6 @@ dist
 
 # private environment variables
 config/default.json
+
+#vscode files
+.vscode
