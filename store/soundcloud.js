@@ -75,9 +75,10 @@ export const mutations = {
     }
   },
   resetTimer(state) {
-    players[state.trackNumber].seek(0)
+    if (players[state.trackNumber]) {
+      players[state.trackNumber].seek(0)
+    }
     console.log(players[state.trackNumber])
-    console.log(players[state.trackNumber].isPlaying())
     console.log(players[state.trackNumber].getState())
   },
   toggleLoop(state) {
@@ -105,16 +106,19 @@ export const actions = {
     }
   },
   async playCurrentTrack({ commit, dispatch }) {
+    console.log('play curren')
     await dispatch('updatePlayer')
     commit('playTrack')
   },
   playNextTrack({ commit, dispatch }) {
     dispatch('pause')
+    commit('resetTimer')
     commit('incrementTrackNumber')
     dispatch('playCurrentTrack')
   },
   playPreviousTrack({ state, commit, dispatch }) {
     dispatch('pause')
+    commit('resetTimer')
     commit('decrementTrackNumber')
     dispatch('playCurrentTrack')
   },

@@ -21,6 +21,9 @@ a {
 input {
   display: block;
 }
+li {
+  list-style-type: none;
+}
 
 /* remove x on search input */
 input[type='search']::-webkit-search-decoration,

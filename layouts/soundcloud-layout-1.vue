@@ -1,6 +1,8 @@
 <template>
   <div id="wrapper">
     <soundcloud-searchbar></soundcloud-searchbar>
+    <soundcloud-categories>
+    </soundcloud-categories>
     <soundcloud-track-card v-if="trackNumber>=0" :track="tracks[trackNumber]"></soundcloud-track-card>
     <soundcloud-track-controls v-if="trackNumber>=0" :tracks="tracks"></soundcloud-track-controls>
     <!-- <button @click="$store.commit('soundcloud/removeTrack', 1)"></button> -->
@@ -13,6 +15,7 @@
 import SoundcloudTrackCard from '~/components/layout-1/Soundcloud-Track-Card'
 import SoundcloudTrackControls from '~/components/layout-1/Soundcloud-Track-Controls'
 import SoundcloudSearchbar from '~/components/layout-1/Soundcloud-Searchbar'
+import SoundcloudCategories from '~/components/layout-1/Soundcloud-Categories'
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -22,7 +25,8 @@ export default {
   components: {
     SoundcloudTrackCard,
     SoundcloudTrackControls,
-    SoundcloudSearchbar
+    SoundcloudSearchbar,
+    SoundcloudCategories
   },
   async mounted() {
     // soundcloud is only available on the browser
@@ -44,15 +48,18 @@ export default {
 #wrapper
   // align-content flex-end
   display grid
-  grid-template-areas '. searchbar .' '. card .' 'controls controls controls'
+  grid-template-areas '. searchbar .' 'categories categories categories' '. card .' 'controls controls controls'
   grid-template-columns minmax(6vw, 1fr) 4fr minmax(6vw, 1fr)
-  grid-template-rows max-content auto max-content
-  jusify-items center
+  grid-template-rows max-content auto auto max-content
   justify-content center
   min-height 100vh
 
 #soundcloud-searchbar
   grid-area searchbar
+
+#categories
+  margin-top 1rem
+  grid-area categories
 
 #soundcloud-track-card
   align-self end
@@ -60,6 +67,7 @@ export default {
   margin 0 auto
 
 #soundcloud-track-controls
+  margin-top 1rem
   align-self end
   grid-area controls
 </style>

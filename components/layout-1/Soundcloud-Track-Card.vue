@@ -61,7 +61,7 @@ export default {
 
 .image-wrapper
   background linear-gradient(60deg, #505DDB, #50607a)
-  border-radius 50%
+  // border-radius 50%
   overflow hidden
   padding-top 100%
   position relative
@@ -81,7 +81,7 @@ img
   background #ffffff
   display flex
   flex-direction column
-  margin-top 1rem
+  // margin-top 1rem
   padding 1rem 0
 
 .username

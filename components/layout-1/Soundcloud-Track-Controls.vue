@@ -12,7 +12,7 @@
     </span>
 
     <span class="loop">
-      <i class="fa fa-retweet" @click="toggleLoop()" :class="{active:loop}"></i>
+      <i class="fa fa-retweet" @click="toggleLoop()" :class="{active:loop}" title="loop"></i>
     </span>
   </section>
 </template>
@@ -43,14 +43,17 @@ export default {
 <style lang="stylus" scoped>
 #soundcloud-track-controls
   background #50607a
-  display flex
-  justify-content center
-  margin-top 20px
+  display grid
+  grid-template-areas '.  . previous current next loop'
+  grid-template-columns 1fr repeat(5, 4rem) 1fr
   padding 1rem 0
+
+for area in previous current next loop
+  .{area}
+    grid-area area
 
 span
   text-align center
-  width 4rem
 
 i
   color #fff
@@ -59,6 +62,6 @@ i
   font-size 1.5rem
   user-select none
 
-.loop .active
+.loop i:hover, .active
   color #1abc9c
 </style>
