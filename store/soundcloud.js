@@ -123,10 +123,14 @@ export const actions = {
     dispatch('playCurrentTrack')
   },
   togglePlay({ state, dispatch }) {
-    if (state.tracks[state.trackNumber].playing) {
-      dispatch('pause')
-    } else {
-      dispatch('playCurrentTrack')
+    const currentTrack = state.tracks[state.trackNumber]
+    // TODO set should be playing state
+    if (currentTrack) {
+      if (currentTrack.playing) {
+        dispatch('pause')
+      } else {
+        dispatch('playCurrentTrack')
+      }
     }
   },
   // async playTrack({ state, commit, dispatch }, track) {
@@ -185,25 +189,28 @@ export const actions = {
     commit('pauseTrack')
     players = []
     const rawData = await Soundcloud.get('/tracks', options)
+    // console.log('raw', rawData)
 
-    const newTracks = rawData.map((track, index) => ({
-      id: track.id,
-      cover: track.artwork_url
-        ? track.artwork_url.replace('large', 'crop')
-        : '',
-      name: track.title,
-      duration: track.duration,
-      love: track.likes_count,
-      link: track.permalink_url,
-      genre: track.genre,
-      userAvatar: track.user.avatar_url,
-      userLink: track.user.permalink_url,
-      userName: track.user.username,
-      playing: false,
-      index
-    }))
-    commit('setTracks', newTracks)
-    commit('setTrackNumber', 0)
+    if (rawData.length) {
+      const newTracks = rawData.map((track, index) => ({
+        id: track.id,
+        cover: track.artwork_url
+          ? track.artwork_url.replace('large', 'crop')
+          : '',
+        name: track.title,
+        duration: track.duration,
+        love: track.likes_count,
+        link: track.permalink_url,
+        genre: track.genre,
+        userAvatar: track.user.avatar_url,
+        userLink: track.user.permalink_url,
+        userName: track.user.username,
+        playing: false,
+        index
+      }))
+      commit('setTracks', newTracks)
+      commit('setTrackNumber', 0)
+    }
   }
 }
 

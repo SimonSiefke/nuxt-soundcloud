@@ -42,9 +42,6 @@ export default {
       return string.substring(0, 35).trim() + ' ...'
     }
   },
-  data() {
-    return {}
-  },
   methods: {
     ...mapActions('soundcloud', ['play', 'pause'])
   }

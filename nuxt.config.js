@@ -30,7 +30,8 @@ module.exports = {
   /*
   ** Global css files
   */
-  css: ['~assets/css/main.css'],
+  css: ['~/assets/css/main.css'],
+  plugins: [{ src: '~/plugins/localStorage.js', ssr: false }],
   /*
   ** Build configuration
   */
