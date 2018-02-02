@@ -31,7 +31,11 @@ module.exports = {
   ** Global css files
   */
   css: ['~/assets/css/main.css'],
-  plugins: [{ src: '~/plugins/localStorage.js', ssr: false }],
+
+  plugins: [
+    // saves the state in localstorage
+    { src: '~/plugins/localStorage.js', ssr: false }
+  ],
   /*
   ** Build configuration
   */
@@ -44,8 +48,8 @@ module.exports = {
     /*
     ** Run ESLint on save
     */
-    extend(config, ctx) {
-      if (ctx.dev && ctx.isClient) {
+    extend(config, { isDev, isClient }) {
+      if (isDev && isClient) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,

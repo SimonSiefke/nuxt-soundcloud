@@ -3,7 +3,7 @@
 
 <script>
 export default {
-  layout: 'soundcloud-layout-1'
+  layout: 'soundcloud-layout-1',
 }
 </script>
 
