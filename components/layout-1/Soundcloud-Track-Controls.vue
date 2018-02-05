@@ -42,7 +42,7 @@ export default {
 </script>
 <style lang="stylus" scoped>
 #soundcloud-track-controls {
-  background: #50607a;
+  background: #66FF00;
   display: grid;
   grid-template-areas: '.  . previous current next loop';
   grid-template-columns: 1fr repeat(5, 4rem) 1fr;
