@@ -1,12 +1,10 @@
 <template>
-  <div id="wrapper">
-    <soundcloud-searchbar></soundcloud-searchbar>
-    <soundcloud-categories>
-    </soundcloud-categories>
-    <soundcloud-track-card v-if="trackNumber>=0" :track="tracks[trackNumber]"></soundcloud-track-card>
-    <soundcloud-track-controls :tracks="tracks"></soundcloud-track-controls>
-    <!-- <button @click="$store.commit('soundcloud/removeTrack', 1)"></button> -->
-  </div>
+  <main>
+    <soundcloud-searchbar/>
+    <soundcloud-categories/>
+    <soundcloud-track-card v-if="trackNumber>=0" :track="tracks[trackNumber]" />
+    <soundcloud-track-controls :tracks="tracks" />
+  </main>
 
 </template>
 
@@ -60,7 +58,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-#wrapper {
+main {
   // align-content flex-end
   display: grid;
   grid-template-areas: '. searchbar .' 'categories categories categories' '. card .' 'controls controls controls';
