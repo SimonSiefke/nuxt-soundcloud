@@ -33,6 +33,9 @@ module.exports = {
   css: ['~/assets/css/main.css'],
 
   plugins: [
+    // global components
+    '~/plugins/global.js',
+
     // saves the state in localstorage
     { src: '~/plugins/localStorage.js', ssr: false }
   ],

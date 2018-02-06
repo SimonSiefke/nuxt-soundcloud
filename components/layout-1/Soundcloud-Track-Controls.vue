@@ -21,13 +21,11 @@ import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
   props: {
-    tracks: {
-      type: Array,
+    track: {
       required: true,
     },
   },
   computed: {
-    ...mapGetters('soundcloud', ['track']),
     ...mapState('soundcloud', ['loop']),
   },
   methods: {

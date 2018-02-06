@@ -21,6 +21,7 @@
     "soundcloud": "^3.3.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
+    "vue-spinner": "^1.0.3",
     "vuex-persistedstate": "^2.4.2"
   },
   "devDependencies": {
