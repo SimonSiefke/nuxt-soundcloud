@@ -10,15 +10,19 @@ if (process.browser) {
 }
 
 let players = []
-
-export const state = () => ({
+const initialState = {
   track: null,
   tracks: [],
   trackNumber: -1,
   loop: true
-})
+}
+
+export const state = () => initialState
 
 export const mutations = {
+  resetState(state) {
+    state.tracks = []
+  },
   setTracks(state, tracks) {
     state.tracks = tracks
   },
@@ -186,6 +190,7 @@ export const actions = {
     }
   },
   async getTracks({ commit }, options) {
+    commit('resetState')
     commit('pauseTrack')
     players = []
     const rawData = await Soundcloud.get('/tracks', options)
@@ -215,7 +220,7 @@ export const actions = {
 }
 
 export const getters = {
-  track(state) {
+  currentTrack(state) {
     if (state.tracks.length > 0) {
       return state.tracks[state.trackNumber]
     }

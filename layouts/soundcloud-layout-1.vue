@@ -1,18 +1,16 @@
 <template>
-  <div id="wrapper">
-    <soundcloud-searchbar></soundcloud-searchbar>
-    <soundcloud-categories>
-    </soundcloud-categories>
-    <soundcloud-track-card v-if="trackNumber>=0" :track="tracks[trackNumber]"></soundcloud-track-card>
-    <soundcloud-track-controls :tracks="tracks"></soundcloud-track-controls>
-    <!-- <button @click="$store.commit('soundcloud/removeTrack', 1)"></button> -->
-  </div>
+  <main>
+    <soundcloud-searchbar v-once/>
+    <soundcloud-categories v-once />
+    <soundcloud-track-card :track="currentTrack" />
+    <soundcloud-track-controls :track="currentTrack" />
+  </main>
 
 </template>
 
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import SoundcloudTrackCard from '~/components/layout-1/Soundcloud-Track-Card'
 import SoundcloudTrackControls from '~/components/layout-1/Soundcloud-Track-Controls'
 import SoundcloudSearchbar from '~/components/layout-1/Soundcloud-Searchbar'
@@ -21,6 +19,7 @@ import SoundcloudCategories from '~/components/layout-1/Soundcloud-Categories'
 export default {
   computed: {
     ...mapState('soundcloud', ['tracks', 'trackNumber']),
+    ...mapGetters('soundcloud', ['currentTrack']),
   },
   components: {
     SoundcloudTrackCard,
@@ -39,11 +38,12 @@ export default {
           this.pause()
         } else {
           console.log('fetch')
-
+          // setTimeout(() => {
           this.getTracks({
             q: 'say my name mazde',
             limit: 10,
           })
+          // }, 100000)
         }
       })
     }
@@ -60,7 +60,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-#wrapper {
+main {
   // align-content flex-end
   display: grid;
   grid-template-areas: '. searchbar .' 'categories categories categories' '. card .' 'controls controls controls';

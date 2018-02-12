@@ -21,28 +21,26 @@ import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
   props: {
-    tracks: {
-      type: Array,
-      required: true
-    }
+    track: {
+      required: true,
+    },
   },
   computed: {
-    ...mapGetters('soundcloud', ['track']),
-    ...mapState('soundcloud', ['loop'])
+    ...mapState('soundcloud', ['loop']),
   },
   methods: {
     ...mapActions('soundcloud', [
       'playNextTrack',
       'playPreviousTrack',
-      'togglePlay'
+      'togglePlay',
     ]),
-    ...mapMutations('soundcloud', ['toggleLoop'])
-  }
+    ...mapMutations('soundcloud', ['toggleLoop']),
+  },
 }
 </script>
 <style lang="stylus" scoped>
 #soundcloud-track-controls {
-  background: #66FF00;
+  background: #50607a;
   display: grid;
   grid-template-areas: '.  . previous current next loop';
   grid-template-columns: 1fr repeat(5, 4rem) 1fr;
