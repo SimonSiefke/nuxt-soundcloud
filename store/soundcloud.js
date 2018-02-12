@@ -22,6 +22,7 @@ export const state = () => initialState
 export const mutations = {
   resetState(state) {
     state.tracks = []
+    // state = initialState
   },
   setTracks(state, tracks) {
     state.tracks = tracks
