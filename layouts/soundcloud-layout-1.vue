@@ -38,12 +38,10 @@ export default {
           this.pause()
         } else {
           console.log('fetch')
-          // setTimeout(() => {
           this.getTracks({
             q: 'say my name mazde',
             limit: 10,
           })
-          // }, 100000)
         }
       })
     }
@@ -61,7 +59,6 @@ export default {
 
 <style lang="stylus" scoped>
 main {
-  // align-content flex-end
   display: grid;
   grid-template-areas: '. searchbar .' 'categories categories categories' '. card .' 'controls controls controls';
   grid-template-columns: minmax(6vw, 1fr) 4fr minmax(6vw, 1fr);
@@ -75,8 +72,8 @@ main {
 }
 
 #categories {
-  margin-top: 1rem;
   grid-area: categories;
+  margin-top: 1rem;
 }
 
 #soundcloud-track-card {
@@ -86,9 +83,9 @@ main {
 }
 
 #soundcloud-track-controls {
-  margin-top: 1rem;
   align-self: end;
   grid-area: controls;
+  margin-top: 1rem;
 }
 </style>
 
