@@ -61,6 +61,9 @@ export default {
 
 
 <style lang="stylus" scoped>
+$content-height = 5.5rem;
+$size = 50vmin;
+
 // .v-spinner {
 // background: blue !important;
 // position: absolute;
@@ -71,32 +74,36 @@ export default {
 // margin: auto;
 // }
 #soundcloud-track-card {
-  display: block;
+  align-content: end;
+  align-items: end;
+  display: grid;
   flex: 1;
+  height: 100%;
+  max-height: 100%;
   max-width: 450px;
-  width: 100%;
+  width: $size;
 }
 
 .image-wrapper {
+  align-items: center;
   background: linear-gradient(60deg, #505DDB, #50607a);
-  overflow: hidden;
-  padding-top: 100%;
-  position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
+  overflow: hidden;
+  padding-top: $size;
+  position: relative;
 }
 
 .v-spinner {
   // positioned in absolute center
   align-items: center;
+  display: flex;
+  height: 100%;
   justify-content: center;
-  top: 0;
   left: 0;
   position: absolute;
-  display: flex;
+  top: 0;
   width: 100%;
-  height: 100%;
 }
 
 img {
@@ -114,7 +121,7 @@ img {
   background: #ffffff;
   display: flex;
   flex-direction: column;
-  // margin-top 1rem
+  height: $content-height;
   padding: 1rem 0;
 }
 
@@ -140,5 +147,3 @@ img {
   }
 }
 </style>
-
-

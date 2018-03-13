@@ -39,7 +39,7 @@ export default {
         } else {
           console.log('fetch')
           this.getTracks({
-            q: 'say my name mazde',
+            q: 'silence marshmello',
             limit: 10,
           })
         }
@@ -62,9 +62,10 @@ main {
   display: grid;
   grid-template-areas: '. searchbar .' 'categories categories categories' '. card .' 'controls controls controls';
   grid-template-columns: minmax(6vw, 1fr) 4fr minmax(6vw, 1fr);
-  grid-template-rows: max-content auto auto max-content;
+  grid-template-rows: max-content auto 1fr max-content;
   justify-content: center;
   min-height: 100vh;
+  overflow hidden
 }
 
 #soundcloud-searchbar {
