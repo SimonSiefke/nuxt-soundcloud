@@ -1,5 +1,7 @@
 # soundcloud-api
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/SimonSiefke/nuxt-soundcloud.svg)](https://greenkeeper.io/)
+
 > Nuxt.js project
 
 ## Build Setup
